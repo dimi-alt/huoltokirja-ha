@@ -7,7 +7,7 @@ Tämä **julkinen** GitHub-repositorio sisältää vain Home Assistantin asennus
 - Home Assistant asentaa ja päivittää **yhden Huoltokirja-sovelluksen** Supervisorin kautta.
 - Erillistä Huoltokirjan päivitinsovellusta ei tarvita.
 
-**Tila:** Ensimmäinen yksityinen konttikuva julkaistaan vasta, kun GitHub Actions -julkaisuputken käyttöoikeudet on määritetty. Asennus ei ole vielä käytettävissä.
+**Asennuksen tila:** Kun ensimmäinen konttikuva on rakennettu onnistuneesti, automaattinen julkaisu lisää tiedoston `huoltokirja/config.yaml`. Ennen sen ilmestymistä Huoltokirja ei vielä näy asennettavana sovelluksena.
 
 Asennusohjeet ovat tiedostossa [huoltokirja/DOCS.md](huoltokirja/DOCS.md).
 
