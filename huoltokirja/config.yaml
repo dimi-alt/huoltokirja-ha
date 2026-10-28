@@ -1,0 +1,22 @@
+name: Huoltokirja
+slug: huoltokirja
+description: Huoltokirja autoille, kiinteistölle, laitteille ja työkoneille
+url: https://github.com/dimi-alt/huoltokirja-ha
+version: "0.2.2"
+stage: experimental
+arch:
+  - aarch64
+  - amd64
+image: "ghcr.io/dimi-alt/huoltokirja"
+init: false
+startup: application
+boot: auto
+ingress: true
+ingress_port: 8099
+ingress_stream: true
+panel_title: Huoltokirja
+panel_icon: mdi:tools
+panel_admin: false
+backup: cold
+options: {}
+schema: {}
