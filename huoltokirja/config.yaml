@@ -2,7 +2,7 @@ name: Huoltokirja
 slug: huoltokirja
 description: Huoltokirja autoille, kiinteistölle, laitteille ja työkoneille
 url: https://github.com/dimi-alt/huoltokirja-ha
-version: "0.2.2"
+version: "0.2.3"
 stage: experimental
 arch:
   - aarch64
