@@ -2,6 +2,10 @@
 
 ## 0.2.x
 
+- Mobiilissa Lisää kohde -painike näkyy myös kategorioissa, joissa on jo kohteita.
+- Uuden huoltokohteen kategoria esivalitaan avatun kategorian perusteella.
+- Mobiilin +-painikkeesta voi lisätä kohteen, huollon tai huolto-ohjelman.
+
 - Korjattu huoltokohteen tallennus Home Assistant Ingressin paloittaisilla JSON-pyynnöillä.
 - Tarkennettu virheellisten ja liian suurten pyyntöjen tarkistuksia.
 
