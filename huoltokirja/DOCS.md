@@ -1,3 +1,9 @@
+## P1-käyttötunnit
+
+Huoltokirjaan voi yhdistää P1-tunnistimen laitteet ja lukea niiden käyttötunnit sekä käynnistyskerrat Home Assistantin kautta. Huoltovälit ja tehdyt huollot kuuluvat vain Huoltokirjaan; Järjestelmä-dashboard näyttää edelleen käyttötilastot. P1:n vanhat huoltorajat ja huoltomerkinnät siirretään kertaluonteisesti, kun P1-laite yhdistetään huoltokohteeseen. Edellyttää `homeassistant_api: true` ja P1-versiota 0.5.3. Jos P1 on poissa käytöstä, vanhentuneita lukemia ei kerätä uutena mittauksena.
+
+---
+
 # Huoltokirja
 
 Huoltokirja on Home Assistant OS -sovellus useille autoille, kiinteistöille,

@@ -2,7 +2,7 @@ name: Huoltokirja
 slug: huoltokirja
 description: Huoltokirja autoille, kiinteistölle, laitteille ja työkoneille
 url: https://github.com/dimi-alt/huoltokirja-ha
-version: "0.2.4"
+version: "0.2.5"
 stage: experimental
 arch:
   - aarch64
@@ -11,6 +11,7 @@ image: "ghcr.io/dimi-alt/huoltokirja"
 init: false
 startup: application
 boot: auto
+homeassistant_api: true
 ingress: true
 ingress_port: 8099
 ingress_stream: true
