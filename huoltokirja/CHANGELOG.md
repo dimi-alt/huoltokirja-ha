@@ -1,3 +1,8 @@
+## Huoltokirja 0.2.6
+
+- Korjattu P1-laitteiden lukeminen Home Assistantin rajapinnasta S6-ympäristössä.
+- Lisätty selkeä virheilmoitus, jos API-oikeus puuttuu tai anturia ei löydy. Ei muutoksia olemassa oleviin huoltotietoihin.
+
 ## 0.2.4
 
 - P1-laitteiden yhdistäminen Huoltokirjaan ja käyttötuntien/käynnistysten lukeminen Home Assistantin kautta.

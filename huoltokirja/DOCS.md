@@ -1,3 +1,8 @@
+## P1-yhteyden korjaus (0.2.6)
+
+Huoltokirjan P1-laitteiden yhteys käyttää S6:n `/command/with-contenv`-käynnistystä, jotta `SUPERVISOR_TOKEN` on käytettävissä. P1-yhteysvirhe näytetään nyt syineen sovelluksessa ja tarkempana virheluokkana lokeissa ilman salaisen tokenin paljastamista. Käyttötuntien ja huoltojen tallennetut tiedot säilyvät.
+
+---
 ## P1-käyttötunnit
 
 Huoltokirjaan voi yhdistää P1-tunnistimen laitteet ja lukea niiden käyttötunnit sekä käynnistyskerrat Home Assistantin kautta. Huoltovälit ja tehdyt huollot kuuluvat vain Huoltokirjaan; Järjestelmä-dashboard näyttää edelleen käyttötilastot. P1:n vanhat huoltorajat ja huoltomerkinnät siirretään kertaluonteisesti, kun P1-laite yhdistetään huoltokohteeseen. Edellyttää `homeassistant_api: true` ja P1-versiota 0.5.3. Jos P1 on poissa käytöstä, vanhentuneita lukemia ei kerätä uutena mittauksena.
