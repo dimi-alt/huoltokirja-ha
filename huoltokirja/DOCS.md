@@ -1,9 +1,37 @@
+## Huolto-ohjelmien tuonti CSV-tiedostosta
+
+Kaikilla huoltokohteilla (Autot, Kiinteistö, Työkoneet ja Laitteet) on Huolto-ohjelma-välilehdellä **Tuo CSV** -painike. Lataa samasta ikkunasta **CSV-mallipohja** ja täytä tiedosto Excelissä, LibreOfficessa tai tekstieditorissa. Käytössä ovat UTF-8-merkistö, puolipiste- tai pilkkuerotin ja lainausmerkeillä ympäröidyt kentät. Mallin otsakerivi on pakollinen; järjestys voi vaihdella, mutta kaikkien otsakkeiden täytyy olla mukana.
+
+```csv
+title;mode;interval_months;interval_meter;meter_unit;next_due_date;next_due_meter;interval_starts;next_due_starts;one_time
+Moottoriöljyn vaihto;interval;12;100;h;2027-03-01;150;;;0
+Kertaluonteinen ensihuolto;interval;;50;h;;50;;;1
+Katsastus;fixed;;;;2027-09-01;;;;0
+```
+
+Rivit ovat **vain esimerkkejä**, eivät oletuksena asennettavia huoltoja. Päivämäärät ja seuraavat mittarirajat annetaan oman kohteen todellisten huoltojen ja mittarilukemien mukaan.
+
+- `title`: toimenpiteen nimi (enintään 150 merkkiä); `mode`: `interval` eli toistuva tai `fixed` eli kiinteä eräpäivä.
+- `interval_months` + `next_due_date`: toistuvuus kuukausissa sekä seuraava todellinen eräpäivä (VVVV-KK-PP).
+- `interval_meter` + `meter_unit` + `next_due_meter`: mittariväli, `km` tai `h`, ja seuraava todellinen mittariraja. Käytettävissä yhtä aikaa kuukausivälin kanssa.
+- `interval_starts` + `next_due_starts`: tarvittaessa käynnistyskertojen huoltoväli ja seuraava raja.
+- `one_time`: `1` kertaluonteiselle ensihuollolle (`interval`-tila), muuten `0`. Kertaluonteinen huolto suljetaan vasta, kun se kirjataan suoritetuksi.
+
+Maksimi 250 toimenpidettä ja 256 kt per CSV. CSV tuodaan **vain valittuun kohteeseen**; muiden kohteiden huolto-ohjelmiin ei kosketa. Jos toimenpiteen nimi löytyy jo samalta kohteelta (myös suljetusta ohjelmasta), se ohitetaan. Vanhat huolto-ohjelmat, niiden rajat, huoltohistoria ja kuitit säilytetään. Virhe yhdessäkin tuontirivissä peruuttaa kaikki saman tiedoston lisäykset. Tuonti ei kirjaa yhtään huoltoa tehdyksi.
+
+Aiemmin tuodut Husqvarna R 214TC -huollot säilyvät ennallaan, mutta sovellus ei enää lisää niitä automaattisesti uudelleenkäynnistyksen yhteydessä eikä näytä mallikohtaista tuontipainiketta.
+
+### P1-käyttömittarit
+
+P1-käyttömittarin voi yhdistää **vain Laite-kategorian** kohteeseen. Muissa kategorioissa P1-yhdistämispainikkeet, yhdistämisviestit ja P1-mittariarvon näyttö on piilotettu. P1-laitteiden valintaikkuna näyttää vain Laite-kohteet, ja palvelin estää uusien linkitysten tekemisen muihin kategorioihin. Mahdollisia ennestään tallennettuja linkityksiä ei poisteta automaattisesti.
+
+---
+
 ## Husqvarna R 214TC (vuosimalli 2024) – virallinen huolto-ohjelma
 
 Huoltokirja sisältää Husqvarna R 214TC:n vuoden 2024 käyttöohjeen (1686-005, 02.12.2024, s. 89–91) mukaisen **käyttötuntiperusteisen** huolto-ohjelman. Huoltokohde käyttää tunnuksia **h**, ei kilometrejä. Huolto-ohjelma sisältää 25 yksilöityä tarkastusta/vaihtoa: kertaluonteiset 50 h ensihuollot, toistuvat 100 h määräaikaishuollot ja vaihteistoöljyn 200 h huollon. AWD-mallin tehtäviä ei lisätä R 214TC:lle. Valmistajan huoltoliikkeelle osoitetut toimenpiteet on merkitty.
 
-- Jo olemassa olevalle **Ajettava ruohonleikkuri** -nimiselle vuoden 2024 kohteelle ohjelma lisätään päivityksen jälkeisessä Huoltokirjan käynnistyksessä, kun malli-/merkkitiedot eivät ole ristiriidassa. Täsmälleen yksi sopiva kohde vaaditaan. Jos nimi tai tunnistetiedot poikkeavat, avaa kyseisen kohteen **Huolto-ohjelma** ja valitse **Tuo Husqvarna R 214TC (2024) -huolto-ohjelma**.
-- Tuonti on idempotentti: samannimistä huolto-ohjelmaa ei lisätä uudelleen, eikä olemassa olevien suunnitelmien rajalukemia, huoltohistoriaa, kuitteja tai mittarilukemia muuteta. Aiemmin suljettuja huoltoja ei avata.
+- Aiemmin automaattisesti lisätyt R 214TC -huolto-ohjelmat säilyvät, mutta uusi tuonti tapahtuu yleisen **Tuo CSV** -toiminnon kautta.\n- Tuonti on idempotentti: samannimistä huolto-ohjelmaa ei lisätä uudelleen, eikä olemassa olevien suunnitelmien rajalukemia, huoltohistoriaa, kuitteja tai mittarilukemia muuteta. Aiemmin suljettuja huoltoja ei avata.
 - **50 h ensihuollot ovat kertaluonteisia:** ne suljetaan vasta, kun käyttäjä kirjaa todellisen huollon tehdyksi. Täytetyt ensihuoltorivit eivät toistu.
 - **Moottoriöljy ja suodatin:** valmistaja määrää 50 h tai 1 vuoden ensihuollon ja sen jälkeen 100 h tai vuosittaisen huollon. Käyttötuntirajat voidaan tuoda, mutta **vuosipäivää ei arvata** koneen iästä, valmistusvuodesta eikä päivityspäivästä. Lisää eräpäivä Huolto-ohjelman Muokkaa-toiminnolla viimeisimmän oikean huoltopäivän tai hankintapäivän perusteella.
 - Koneen tähänastinen käyttötuntimäärä ei ole Home Assistantista automaattisesti saatavilla ilman siihen erikseen kytkettyä anturia. Syötä sen mekaanisesta tuntimittarista todellinen lukema sekä tarvittaessa muokkaa tulevat rajat viimeksi tehtyjen huoltojen mukaan. Tuonti **ei luo valheellisia huoltomerkintöjä**.

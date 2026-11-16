@@ -1,3 +1,10 @@
+## Yleinen CSV-huolto-ohjelmien tuonti ja P1-käyttöliittymän rajaus
+
+- Korvattu työkoneissa näkynyt Husqvarna R 214TC -tuontipainike kaikkien kohteiden Huolto-ohjelma-välilehdellä yleisellä **Tuo CSV** -painikkeella ja ladattavalla CSV-mallipohjalla.
+- CSV-tiedosto tukee aika-, mittari-, käynnistys- ja kiinteitä määräpäivärajoja sekä kertaluonteisia huoltoja; tuonti validoidaan ja tallennetaan atomisesti. Samannimiset rivit ohitetaan eikä aiempaan historiaan kosketa.
+- Poistettu mallikohtainen pitkä Husqvarna-huomautusteksti ja automaattinen Husqvarna-ohjelmien lisääminen käynnistyksessä. Jo tallennetut ohjelmat säilyvät.
+- P1-käyttömittarin yhdistäminen ja sen käyttöliittymäilmoitukset rajattu Laite-kategoriaan. Muut kategoriat eivät enää tarjoa yhdistämistä, eikä rajapinta hyväksy uusia linkityksiä niihin. Vanhat tallennetut linkitykset jätetään koskematta.
+
 ## R 214TC 2024 – valmistajan huolto-ohjelma
 
 - Tuotu Husqvarna R 214TC vm. 2024:n 50 h ensihuollot, 100 h määräaikaishuollot ja 200 h vaihteistoöljyn vaihtoväli erillisinä tuntirajoina.
