@@ -1,3 +1,10 @@
+## R 214TC 2024 – valmistajan huolto-ohjelma
+
+- Tuotu Husqvarna R 214TC vm. 2024:n 50 h ensihuollot, 100 h määräaikaishuollot ja 200 h vaihteistoöljyn vaihtoväli erillisinä tuntirajoina.
+- Automaattinen kertaluonteinen, duplikaatit estävä kohdistus yksiselitteiseen nykyiseen 'Ajettava ruohonleikkuri' -kohteeseen päivityksen jälkeen; muille työkonekohteille turvallinen tuontipainike.
+- Ensihuollot suljetaan vain todellisen huoltokirjauksen jälkeen; historia, aiemmat ohjelmat ja mittarilukemat säilyvät.
+- Vuosittaisen moottoriöljy-/suodatinhuollon kalenterieräpäivä asetetaan erikseen viimeisen huollon todellisen päivämäärän perusteella.
+
 ## Huoltokirja 0.2.6
 
 - Korjattu P1-laitteiden lukeminen Home Assistantin rajapinnasta S6-ympäristössä.

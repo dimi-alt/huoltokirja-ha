@@ -1,3 +1,19 @@
+## Husqvarna R 214TC (vuosimalli 2024) – virallinen huolto-ohjelma
+
+Huoltokirja sisältää Husqvarna R 214TC:n vuoden 2024 käyttöohjeen (1686-005, 02.12.2024, s. 89–91) mukaisen **käyttötuntiperusteisen** huolto-ohjelman. Huoltokohde käyttää tunnuksia **h**, ei kilometrejä. Huolto-ohjelma sisältää 25 yksilöityä tarkastusta/vaihtoa: kertaluonteiset 50 h ensihuollot, toistuvat 100 h määräaikaishuollot ja vaihteistoöljyn 200 h huollon. AWD-mallin tehtäviä ei lisätä R 214TC:lle. Valmistajan huoltoliikkeelle osoitetut toimenpiteet on merkitty.
+
+- Jo olemassa olevalle **Ajettava ruohonleikkuri** -nimiselle vuoden 2024 kohteelle ohjelma lisätään päivityksen jälkeisessä Huoltokirjan käynnistyksessä, kun malli-/merkkitiedot eivät ole ristiriidassa. Täsmälleen yksi sopiva kohde vaaditaan. Jos nimi tai tunnistetiedot poikkeavat, avaa kyseisen kohteen **Huolto-ohjelma** ja valitse **Tuo Husqvarna R 214TC (2024) -huolto-ohjelma**.
+- Tuonti on idempotentti: samannimistä huolto-ohjelmaa ei lisätä uudelleen, eikä olemassa olevien suunnitelmien rajalukemia, huoltohistoriaa, kuitteja tai mittarilukemia muuteta. Aiemmin suljettuja huoltoja ei avata.
+- **50 h ensihuollot ovat kertaluonteisia:** ne suljetaan vasta, kun käyttäjä kirjaa todellisen huollon tehdyksi. Täytetyt ensihuoltorivit eivät toistu.
+- **Moottoriöljy ja suodatin:** valmistaja määrää 50 h tai 1 vuoden ensihuollon ja sen jälkeen 100 h tai vuosittaisen huollon. Käyttötuntirajat voidaan tuoda, mutta **vuosipäivää ei arvata** koneen iästä, valmistusvuodesta eikä päivityspäivästä. Lisää eräpäivä Huolto-ohjelman Muokkaa-toiminnolla viimeisimmän oikean huoltopäivän tai hankintapäivän perusteella.
+- Koneen tähänastinen käyttötuntimäärä ei ole Home Assistantista automaattisesti saatavilla ilman siihen erikseen kytkettyä anturia. Syötä sen mekaanisesta tuntimittarista todellinen lukema sekä tarvittaessa muokkaa tulevat rajat viimeksi tehtyjen huoltojen mukaan. Tuonti **ei luo valheellisia huoltomerkintöjä**.
+
+**Ennen jokaista käyttöä:** tarkista öljy- ja polttoainevuodot, moottorin ja voimansiirron öljymäärä, rengas- ja jarrutoiminnot, ohjausvaijerit, turvakytkimet ja terät. Puhdista leikkuulaite, jäähdytysilmanotto ja tarvittaessa äänenvaimentimen ympäristö. Nämä ovat käyttöä edeltäviä tarkistuksia, eivät tuntivälillä erääntyviä huoltorivejä.
+
+Valmistajan suomenkielinen [käyttöohje (PDF)](https://www-static-nw.husqvarna.com/hbd/tdrdownload/v2/pub000091722/doc000221919/OM/jnBHnXacqesICn3ZV7zCegUpeVU?httproute=True), huoltokaavio sivuilla 89–91.
+
+---
+
 ## P1-yhteyden korjaus (0.2.6)
 
 Huoltokirjan P1-laitteiden yhteys käyttää S6:n `/command/with-contenv`-käynnistystä, jotta `SUPERVISOR_TOKEN` on käytettävissä. P1-yhteysvirhe näytetään nyt syineen sovelluksessa ja tarkempana virheluokkana lokeissa ilman salaisen tokenin paljastamista. Käyttötuntien ja huoltojen tallennetut tiedot säilyvät.
