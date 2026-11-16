@@ -1,6 +1,45 @@
+## Huolto-ohjelmien tuonti ja mobiilikäyttö (uusi)
+
+Kaikille kohteille: **Kohteet → [oma kohde] → Huolto-ohjelma → Tuo ohjelma**. Valitse jokin kolmesta tavasta:
+
+1. Valitse puhelimen tiedostoista **CSV** tai **JSON**.
+2. Jos tiedostovalitsin ei toimi Home Assistant -sovelluksen sisällä, kopioi tiedoston teksti ja liitä se **CSV/JSON-teksti**-kenttään.
+3. Valitse **Bosch Climate Class 6101i**- tai **Husqvarna R 214TC 2024** -mallipohja. Nämä ovat vapaaehtoisia esimerkkiohjelmia, eivät automaattisesti lisättäviä huoltoja. Tarkista laitemalli ja valmistajan huolto-ohjeet.
+
+Valitse **Esikatsele huollot**. Esikatselussa valitaan halutut rivit ja täydennetään huollon seuraavat **todelliset** määräpäivät sekä mittari- ja käynnistysrajat. Kunkin rivin **Muokkaa muita huoltotietoja** -osiosta voidaan muuttaa myös nimi, työohje, varaosat, huollon tekijä sekä huolto-ohjeen URL. Virheelliset rivit ilmoitetaan, eikä niitä voi tallentaa ennen korjaamista tai poisvalintaa. **Tuo valitut huollot** tallentaa kaikki valitut rivit yhtenä kokonaisuutena; saman kohteen samannimiset ohjelmat ohitetaan, eikä vanhoja tai jo suljettuja huoltoja muuteta.
+
+### CSV-sarakkeet
+
+Vanha 10-sarakkeinen CSV on edelleen yhteensopiva. Uudessa mallipohjassa ovat entisten lisäksi **interval_days**, **instructions**, **parts**, **service_by** ja **source_url**. Tuonti hyväksyy myös suppean CSV:n, jossa on vähintään otsakkeet `title` ja `mode` sekä tarvittavat huoltorajat.
+
+```csv
+title;mode;interval_days;next_due_date;service_by;instructions;parts;source_url
+Suodattimien puhdistus;interval;14;2026-11-30;self;Katkaise virta ennen suodattimen puhdistusta;Harja;https://example.com/ohje
+Ammattilaisen tarkistus;interval;730;2028-11-30;professional;Huolto ammattilaisen toimesta;;
+```
+
+- `interval_days` tai `interval_months`: toistuvuus päivinä tai kuukausina. Päivä- ja kuukausiväli ovat toisensa poissulkevia. Vastaava `next_due_date` on annettava.
+- `interval_meter` (ja `meter_unit` = `km` tai `h`) sekä `next_due_meter`: huoltoväli ja seuraava mittariraja. Voi yhdistää päivään tai kuukauteen.
+- `interval_starts` ja `next_due_starts`: käynnistyskertojen rajat.
+- `mode` = `interval` (toistuva) tai `fixed` (kiinteä eräpäivä); `one_time` = `1` vain kertaluonteisille toistuva-tyyppisille huolloille.
+- `instructions`: huollon työohje, enintään 5 000 merkkiä.
+- `parts`: varaosat/tarvikkeet, enintään 2 000 merkkiä.
+- `service_by`: `self` (omatoiminen), `professional` (ammattilainen), `either` (kumpi tahansa).
+- `source_url`: valmistajan ohjeen http/https-osoite.
+
+**Huom.** Valmiissa mallipohjissa ei arvata puuttuvaa huoltopäivää. Boschin 14 päivän suodatinpuhdistus on nyt oikeasti toistuva: huoltohetken päivästä lasketaan automaattisesti seuraava 14 päivän määräpäivä. Husqvarnan 50 h / 100 h / 200 h -rajoja pitää verrata todellisiin käyttötunteihin. Mallipohjan valmistajan tai tämän sovelluksen ehdottamat huoltovälit on tarkistettava oikeasta käyttöohjeesta ennen käyttöönottoa.
+
+JSON-tuonnissa käytetään objektia `{"plans":[{...}]}` tai suoraan ohjelmaolioiden taulukkoa. Kenttien nimet ovat samat kuin CSV:ssä. Molemmissa muodoissa max 256 kt / 250 huoltoa. Tuonti ei koskaan tee huoltomerkintöjä eikä yliaja vanhoja merkintöjä.
+
+### Käyttömittarit
+
+Käyttömittarin yhdistäminen näytetään vain **Laite**-kategorian tarpeellisissa näkymissä. Etusivun, yleisen navigaation ja muiden kohteiden toistuvat P1-ilmoitukset on poistettu; yhteys ja sen virhetilanne näytetään erillisessä **Käyttömittarit**-näkymässä. Itse mittaritietojen keräystä, vanhoja linkityksiä ja varmistuksia ei poisteta.
+
+---
+
 ## Huolto-ohjelmien tuonti CSV-tiedostosta
 
-Kaikilla huoltokohteilla (Autot, Kiinteistö, Työkoneet ja Laitteet) on Huolto-ohjelma-välilehdellä **Tuo CSV** -painike. Lataa samasta ikkunasta **CSV-mallipohja** ja täytä tiedosto Excelissä, LibreOfficessa tai tekstieditorissa. Käytössä ovat UTF-8-merkistö, puolipiste- tai pilkkuerotin ja lainausmerkeillä ympäröidyt kentät. Mallin otsakerivi on pakollinen; järjestys voi vaihdella, mutta kaikkien otsakkeiden täytyy olla mukana.
+Kaikilla huoltokohteilla (Autot, Kiinteistö, Työkoneet ja Laitteet) on Huolto-ohjelma-välilehdellä **Tuo ohjelma** -painike. Lataa samasta ikkunasta **CSV-mallipohja** ja täytä tiedosto Excelissä, LibreOfficessa tai tekstieditorissa. Käytössä ovat UTF-8-merkistö, puolipiste- tai pilkkuerotin ja lainausmerkeillä ympäröidyt kentät. Mallin otsakerivi on pakollinen; järjestys voi vaihdella, mutta kaikkien otsakkeiden täytyy olla mukana.
 
 ```csv
 title;mode;interval_months;interval_meter;meter_unit;next_due_date;next_due_meter;interval_starts;next_due_starts;one_time
@@ -31,7 +70,7 @@ P1-käyttömittarin voi yhdistää **vain Laite-kategorian** kohteeseen. Muissa 
 
 Huoltokirja sisältää Husqvarna R 214TC:n vuoden 2024 käyttöohjeen (1686-005, 02.12.2024, s. 89–91) mukaisen **käyttötuntiperusteisen** huolto-ohjelman. Huoltokohde käyttää tunnuksia **h**, ei kilometrejä. Huolto-ohjelma sisältää 25 yksilöityä tarkastusta/vaihtoa: kertaluonteiset 50 h ensihuollot, toistuvat 100 h määräaikaishuollot ja vaihteistoöljyn 200 h huollon. AWD-mallin tehtäviä ei lisätä R 214TC:lle. Valmistajan huoltoliikkeelle osoitetut toimenpiteet on merkitty.
 
-- Aiemmin automaattisesti lisätyt R 214TC -huolto-ohjelmat säilyvät, mutta uusi tuonti tapahtuu yleisen **Tuo CSV** -toiminnon kautta.\n- Tuonti on idempotentti: samannimistä huolto-ohjelmaa ei lisätä uudelleen, eikä olemassa olevien suunnitelmien rajalukemia, huoltohistoriaa, kuitteja tai mittarilukemia muuteta. Aiemmin suljettuja huoltoja ei avata.
+- Aiemmin automaattisesti lisätyt R 214TC -huolto-ohjelmat säilyvät, mutta uusi tuonti tapahtuu yleisen **Tuo ohjelma** -toiminnon kautta.\n- Tuonti on idempotentti: samannimistä huolto-ohjelmaa ei lisätä uudelleen, eikä olemassa olevien suunnitelmien rajalukemia, huoltohistoriaa, kuitteja tai mittarilukemia muuteta. Aiemmin suljettuja huoltoja ei avata.
 - **50 h ensihuollot ovat kertaluonteisia:** ne suljetaan vasta, kun käyttäjä kirjaa todellisen huollon tehdyksi. Täytetyt ensihuoltorivit eivät toistu.
 - **Moottoriöljy ja suodatin:** valmistaja määrää 50 h tai 1 vuoden ensihuollon ja sen jälkeen 100 h tai vuosittaisen huollon. Käyttötuntirajat voidaan tuoda, mutta **vuosipäivää ei arvata** koneen iästä, valmistusvuodesta eikä päivityspäivästä. Lisää eräpäivä Huolto-ohjelman Muokkaa-toiminnolla viimeisimmän oikean huoltopäivän tai hankintapäivän perusteella.
 - Koneen tähänastinen käyttötuntimäärä ei ole Home Assistantista automaattisesti saatavilla ilman siihen erikseen kytkettyä anturia. Syötä sen mekaanisesta tuntimittarista todellinen lukema sekä tarvittaessa muokkaa tulevat rajat viimeksi tehtyjen huoltojen mukaan. Tuonti **ei luo valheellisia huoltomerkintöjä**.

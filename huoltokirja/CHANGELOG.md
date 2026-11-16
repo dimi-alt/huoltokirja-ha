@@ -1,3 +1,13 @@
+## Mobiilituonnin korjaus, huolto-ohjeet ja monipuolinen esikatselu
+
+- Tuonti toimii CSV- ja JSON-tiedostoilla, mobiilissa FileReader-yhteensopivasti sekä tekstinä liittämällä.
+- Kaikille huoltokohteille opt-in Bosch Climate 6101i / Husqvarna R 214TC -mallipohjat, jotka esikatsellaan ennen lisäämistä.
+- Tuonnin valittavat rivit, korjattavat nimet, määräpäivät, mittarirajat, huolto-ohjeet, varaosat, tekijä ja ohjeen URL.
+- Tuetut päivävälein toistuvat huollot, esimerkiksi suodattimien 14 päivän puhdistus.
+- Vanhat 10-sarakkeiset CSV:t toimivat edelleen, samannimiset tehtävät ohitetaan ja vanha huoltohistoria säilyy.
+- P1 näkyy käyttömittariin liittyvissä laitenäkymissä, ei yleisnavigaatiossa tai muihin kategorioihin liittyvissä lomakkeissa.
+- Uudet huoltotiedot tallentuvat olemassa olevaan SQLite-tietokantaan idempotentilla skeemapäivityksellä.
+
 ## Yleinen CSV-huolto-ohjelmien tuonti ja P1-käyttöliittymän rajaus
 
 - Korvattu työkoneissa näkynyt Husqvarna R 214TC -tuontipainike kaikkien kohteiden Huolto-ohjelma-välilehdellä yleisellä **Tuo CSV** -painikkeella ja ladattavalla CSV-mallipohjalla.
