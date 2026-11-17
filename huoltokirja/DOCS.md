@@ -1,3 +1,27 @@
+## Huoltokirjan tietojen manuaalinen vienti ja palautus
+
+Home Assistantin koko järjestelmän varmuuskopiointi jää ensisijaiseksi varmuuskopiointitavaksi. Huoltokirjaan on lisätty vain **manuaalinen, siirrettävä ZIP-vienti ja ZIP-palautus**. Uutta ajastettua varmuuskopiointia, erillistä varmuuskopiohistoriaa tai tallennuspaikkaa ei toteuteta.
+
+### Vie tiedot
+
+Avaa Huoltokirja → **Raportit → Vie kaikki tiedot (ZIP)**. Vienti sisältää huoltokohteet, ohjelmat (myös päivä-/tuntivälit, työohjeet ja varaosat), suoritetut huollot, mittarilukemat, kustannukset, liitteiden metatiedot ja kaikki kuitit/kuvat/PDF:t. ZIP-tiedoston `huoltokirja.json` sisältää tietokannan sallitut taulut, `liitteet/` varsinaiset tiedostot ja `manifest.json` tarkistussummat. Vienti keskeytyy, jos jokin tietokannan mainitsema liite puuttuu tai sen koko poikkeaa tietokannasta; sovellus ei tee puutteellista ZIP-vientiä hiljaisesti.
+
+### Palauta tiedot
+
+1. Avaa Huoltokirja → **Raportit → Tuo tiedot ZIP-tiedostosta**.
+2. Valitse Huoltokirjasta aiemmin viety ZIP (puhelimen Tiedostot-sovelluksesta tai tietokoneelta), enintään 23 Mt.
+3. Paina **Tarkista ZIP-tiedosto**. Sovellus purkaa tiedot ainoastaan tarkistusta varten ja näyttää vanhojen sekä palautettavien huoltokohteiden, ohjelmien, merkintöjen, lukemien ja liitteiden määrät. Vahvistamattomassa vaiheessa ei muuteta nykyisiä tietoja.
+4. Tarkista tiedoston sisältö. Palautus **korvaa kaikki nykyiset tiedot**; se ei yhdistä tai täydennä yksittäisiä kohteita. Valitse vahvistusruutu ja kirjoita **PALAUTA**. Paina **Korvaa Huoltokirjan tiedot**.
+5. Kun onnistumisviesti näkyy, tarkista kohteet, huoltohistoria ja liitteet Huoltokirjassa.
+
+Palautuksessa tarkistetaan ZIP:n tiedostopolut, symlinksuojaus, tiedostokoot ja määrät, liitteiden viittaukset, ZIP-tiedoston CRC, vientitiedoston SHA-256-tarkistussummat (jos manifesti on mukana), SQL-skeema sekä tietokannan viite-eheys. Vanhemmat Huoltokirjasta viedyt ZIP:t ilman `manifest.json`-tiedostoa hyväksytään, jos niiden sisältö on muuten ehjä. Tuntemattomat tai korruptoituneet ZIP:t hylätään. Järjestelmä tarkistaa myös, ettei Huoltokirjan sisältö ole muuttunut esikatselun ja vahvistuksen välissä.
+
+Palautus luo uusille liitteille uudet sisäiset tallennusnimet ja kirjoittaa ne kokonaan levylle ennen tietokannan yksittäistä SQLite-transaktiota. Vanhoja liitteitä poistetaan vasta onnistuneen transaktion jälkeen. Tavallisen palautusvirheen tai epäonnistuneen tietokantapäivityksen yhteydessä vanhat tiedot ja liitteet säilyvät. Palautuksesta ei muodosteta erillistä ajastettua varmuuskopiota: **ota tarvittaessa ZIP-vienti ja varmista Home Assistantin varmuuskopio ennen vanhojen tietojen korvaamista**.
+
+**Rajoitukset:** ZIP max 23 Mt (mobiilin JSON-siirtorajan vuoksi); purettu sisältö max 80 Mt; yksittäinen liite max 5 Mt. Suuremmat kokonaisuudet palautetaan tarvittaessa Home Assistantin sovellusvarmuuskopiosta. Yksittäisen auton tai laitteen huoltohistorian yhdistäminen nykyiseen tietokantaan ei kuulu tähän versioon. Älä tallenna ZIP-vientiä julkiseen GitHub-repositorioon, koska se voi sisältää henkilötietoja, kuitteja ja tunnisteita.
+
+---
+
 ## Huolto-ohjelmien tuonti ja mobiilikäyttö (uusi)
 
 Kaikille kohteille: **Kohteet → [oma kohde] → Huolto-ohjelma → Tuo ohjelma**. Valitse jokin kolmesta tavasta:

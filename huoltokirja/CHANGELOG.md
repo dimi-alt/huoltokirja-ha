@@ -1,3 +1,11 @@
+## Manuaalinen ZIP-tuonti ja -vienti
+
+- Raportit-näkymään lisätty nykyisen ZIP-viennin rinnalle kaikkien Huoltokirjan tietojen turvallinen ZIP-palautus.
+- Ennen palautusta tarkistetaan tiedoston rakenne, liitteet, SHA-256/CRC, SQLite-rakenne ja viite-eheys sekä näytetään määrällinen esikatselu ja vaaditaan erillinen korvausvahvistus.
+- Liitteet siirretään uusiin nimiin ennen tietokannan transaktiota; virhetilanteessa alkuperäiset tiedot ja tiedostot säilyvät.
+- Aikaisemmin luodut Huoltokirjan ZIP-viennit säilyvät tuettuina. Nyt vienti myös varoittaa, jos jokin liite puuttuu.
+- Ei erillistä automaattista varmuuskopiointia: käytössä säilyy Home Assistantin järjestelmävarmuuskopiointi.
+
 ## Mobiilituonnin korjaus, huolto-ohjeet ja monipuolinen esikatselu
 
 - Tuonti toimii CSV- ja JSON-tiedostoilla, mobiilissa FileReader-yhteensopivasti sekä tekstinä liittämällä.
