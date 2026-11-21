@@ -1,3 +1,12 @@
+## Huoltokirja 0.2.8 – ilmoitusten luotettavuus
+
+- Huoltomuistutusten tilat vertaillaan ennen lähettämistä: muuttumattomista huolto-ohjelmista ei enää kutsuta Ilmoituskeskusta turhaan 15 minuutin välein. Kuuden tunnin välein tehdään varmistava uudelleensynkronointi, jotta mahdollisen HA-varmuuskopion palautuksen jälkeen puuttuvat aktiiviset muistutukset saadaan takaisin.
+- Puhelin- ja Home Assistant -verkkokutsuja ei tehdä Huoltokirjan tietokantalukituksen sisällä. Tavalliset käyttäjät voivat siis käyttää Huoltokirjaa ilman, että hidas ilmoituspalvelu lukitsee tietokannan.
+- Uusi huoltomerkintä tai huolto-ohjelman muutos käynnistää taustatarkistuksen välittömästi eikä vasta seuraavan 15 minuutin ajastuksen jälkeen.
+- Vanhentuneita P1-käyttömittaustietoja (yli 180 sekuntia) ei käytetä uusiin tunti- tai käynnistysrajahälytyksiin. Kalenteriperusteinen eräpäivä toimii normaalisti.
+- Vanhojen asennusten `plan_notify_active`-taulukko päivitetään automaattisesti. Käyttäjien valitsemat vastaanottajat ja aiemmat huoltomerkinnät säilyvät.
+- Ilmoituskeskuksen yhteisen anturisensorin yksityisiä laitetunnisteita ei enää lueta: Huoltokirja käyttää sen julkaisemaa vastaanottajakohtaista laitemäärää.
+
 ## P1-laitteiden hallinta
 
 Huoltokirja listaa P1:stä opetetut tai releen ON-tunninseurantaan liitetyt laitteet; pelkät oletusnimet piilotetaan. **Piilota** tai **Palauta näkyviin** vaikuttaa vain laiteluetteloon. **Poista yhdistäminen** poistaa mittarilinkin mutta säilyttää huoltotiedot ja kohteen. Opetusmallin kokonaispoisto tehdään P1-tunnistimessa 0.5.4 ja vaatii laitteen nimen kirjoittamisen; P1-historia säilyy.
