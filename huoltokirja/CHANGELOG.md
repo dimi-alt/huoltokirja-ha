@@ -1,3 +1,10 @@
+## Huoltokirja 0.2.15 – yhtenäinen julkaisuversion hallinta
+
+- Julkaisun versionumero tulee jatkossa lähdekoodin yhdestä `huoltokirja/config.yaml`-tiedostosta.
+- GitHub Actions julkaisee tällä samalla versiolla konttikuvat ja Home Assistantin sovelluskaupan tiedot.
+- Julkaisu estetään, jos versio ei ole suurempi kuin viimeksi julkaistu.
+- Julkaisun ja muutoshistorian versionumerot tarkistetaan automaattisesti.
+
 ## Huoltokirja 0.2.8 – ilmoitusten luotettavuus
 
 - Huoltomuistutusten tilat vertaillaan ennen lähettämistä: muuttumattomista huolto-ohjelmista ei enää kutsuta Ilmoituskeskusta turhaan 15 minuutin välein. Kuuden tunnin välein tehdään varmistava uudelleensynkronointi, jotta mahdollisen HA-varmuuskopion palautuksen jälkeen puuttuvat aktiiviset muistutukset saadaan takaisin.
