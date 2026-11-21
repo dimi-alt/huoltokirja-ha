@@ -1,3 +1,13 @@
+## Huoltokirja 0.2.7 – Ilmoituskeskus-yhteys
+
+- Huolto-ohjelmille voi valita yksittäisiä Home Assistant -käyttäjiä muistutusten vastaanottajiksi.
+- Ilmoitukset lähetetään Keijukangas Ilmoituskeskuksen HA-rajapinnan kautta, jos integraatio on asennettu ja puhelimet on rekisteröity.
+- Automaattinen taustatarkistus joka 15. minuutti toimii ilman avointa Huoltokirja-näkymää.
+- Määräpäivien muistutukset alkavat enintään 14 vrk ennen huoltoa (lyhyissä päivähuoltoväleissä myöhemmin); käyttötuntien 10 h ja käynnistysten 20 kertaa ennen rajaa.
+- Erääntyessä lähetetään erillinen uusi hälytys; huollon valmistuessa, sulkeutuessa tai siirtyessä seuraavaan huoltojaksoon vanha hälytys päätetään.
+- Ilmoituksia ei oletuksena lähetetä kenellekään. Vanhat huolto-ohjelmat ja historia säilyvät.
+- Käyttäjävalinnat sisältyvät Huoltokirjan ZIP-vientiin ja palautukseen.
+
 ## Manuaalinen ZIP-tuonti ja -vienti
 
 - Raportit-näkymään lisätty nykyisen ZIP-viennin rinnalle kaikkien Huoltokirjan tietojen turvallinen ZIP-palautus.
@@ -30,29 +40,27 @@
 - Ensihuollot suljetaan vain todellisen huoltokirjauksen jälkeen; historia, aiemmat ohjelmat ja mittarilukemat säilyvät.
 - Vuosittaisen moottoriöljy-/suodatinhuollon kalenterieräpäivä asetetaan erikseen viimeisen huollon todellisen päivämäärän perusteella.
 
-## Huoltokirja 0.2.6
+## Huoltokirja 0.2.6 – P1-yhteyden korjaus
 
-- Korjattu P1-laitteiden lukeminen Home Assistantin rajapinnasta S6-ympäristössä.
-- Lisätty selkeä virheilmoitus, jos API-oikeus puuttuu tai anturia ei löydy. Ei muutoksia olemassa oleviin huoltotietoihin.
+- Korjattu S6-käynnistyksen ympäristömuuttujat: `SUPERVISOR_TOKEN` välittyy Python-prosessille `with-contenv`-kääreen kautta.
+- P1-yhteysvirheet yksilöidään Huoltokirjan käyttöliittymässä ja lokeissa (puuttuva tunniste, 401/403, 404, aikakatkaisu, virheellinen vastaus) ilman tunnisteiden tulostamista.
+- P1 REST -luku odottaa enintään 8 sekuntia; vanhentuneet lukemat eivät korvaa viimeistä vahvistettua huoltomittarilukemaa.
+- Huoltokirjan tietokanta ja olemassa olevat huoltohistoriat säilyvät ennallaan.
 
-## 0.2.4
+## 0.2.4 – P1-käyttötunnit Huoltokirjassa
 
-- P1-laitteiden yhdistäminen Huoltokirjaan ja käyttötuntien/käynnistysten lukeminen Home Assistantin kautta.
-- Huolto-ohjelmien käyttötunti- ja käynnistysrajat, vanhojen P1-merkintöjen kertaluonteinen siirto. Ei autonlämmityksen P1-seurantaa.
-- Vanhat Huoltokirjan kohteet, huollot ja liitteet säilyvät.
+- Lue Home Assistantin P1-käyttömittari turvallisesti Supervisorin Core REST -rajapinnasta. Tarvitaan `homeassistant_api: true`.
+- Yhdistä P1-laite aiempaan huoltokohteeseen tai luo uusi laitekohde. Älä kopioi autoja tai autonlämmitystä.
+- Tallenna viimeisin vahvistettu käyttötunti-/käynnistyslukema, erota vanhentunut mittaus tuoreesta.
+- Huoltovälit kuukausina, käyttö-/käyntitunteina ja käynnistyskertoina. P1:n tuore lukema voidaan käyttää huollon mittarilukemana.
+- Tuo olemassa olevat P1-huoltomerkinnät ja huoltorajat kerran. Huoltokirja on ainoa uusien huoltojen tallennuspaikka.
+- Vanhojen autojen huoltotiedot, kuitit ja huoltosuunnitelmat säilyvät.
 
 # Muutoshistoria
 
-## 0.2.x
+## 0.1.0
 
-- Mobiilissa Lisää kohde -painike näkyy myös kategorioissa, joissa on jo kohteita.
-- Uuden huoltokohteen kategoria esivalitaan avatun kategorian perusteella.
-- Mobiilin +-painikkeesta voi lisätä kohteen, huollon tai huolto-ohjelman.
-
-- Korjattu huoltokohteen tallennus Home Assistant Ingressin paloittaisilla JSON-pyynnöillä.
-- Tarkennettu virheellisten ja liian suurten pyyntöjen tarkistuksia.
-
-- Yksityinen GitHub Container Registry -jakelu.
-- Home Assistantin oma automaattinen päivitys ilman erillistä päivitintä.
-- Ensimmäisen Huoltokirja-version ominaisuudet: useita autoja, huoltohistoria,
-  toistuvat huollot, katsastukset, kustannukset ja liitteet.
+- Ensimmäinen Home Assistant OS -versio Ingress-käyttöliittymällä.
+- Useita autoja ja muita huoltokohteita, omat suunnitelmat ja historiat.
+- Toistuvat aika- ja mittariperusteiset huollot sekä kiinteät määräpäivät.
+- Huoltomerkintöjen kustannukset ja liitteet, yhteenveto ja vienti.

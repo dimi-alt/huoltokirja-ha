@@ -1,3 +1,18 @@
+## Ilmoituskeskuksen huoltomuistutukset (0.2.7)
+
+1. Ota Keijukangas Ilmoituskeskus -integraatio käyttöön Home Assistantissa ja varmista, että `sensor.keijukangas_alerts` on käytettävissä.
+2. Luo jokaiselle perheenjäsenelle oma Home Assistant -käyttäjä ja asenna Home Assistant Companion hänen puhelimeensa.
+3. Avaa **Ilmoituskeskus** sivupalkista ja yhdistä jokaiselle käyttäjälle hänen `notify.mobile_app_...`-toimintonsa. Testaa kunkin vastaanottajan ilmoitus.
+4. Avaa **Huoltokirja → Kohteet → huoltokohde → Huolto-ohjelma → Muokkaa**.
+5. Valitse **Huoltomuistutusten vastaanottajat** -kohdassa henkilöt, joille kyseisen huollon muistutukset lähetetään.
+6. Tallenna. Ilmoitus lähtee automaattisesti ennen huoltorajaa tai huollon erääntyessä; jo tallennetuille huolloille ei aseteta vastaanottajia automaattisesti.
+
+**Rajat:** kalenterihuolloissa enintään 14 päivää ennen eräpäivää (lyhyissä päiväperusteisissa huoltoväleissä aikaisintaan neljäsosan huoltovälistä ennen), käyttömittariin perustuvissa huolloissa 10 h tai 20 käynnistyskertaa ennen rajaa. Ilmoitukset ovat tiedoksi-/varoitustasoa. Ilmoituskeskuksen kuittaus ei merkitse huoltoa suoritetuksi. Ainoastaan Huoltokirjaan tehty todellinen huoltomerkintä siirtää huoltorajaa. Puuttuva tai epäluotettava mittaustieto ei tarkoita nollaa. Jos HA/ilmoituskeskus ei vastaa, sovellus yrittää uudelleen seuraavalla tarkistuskerralla.
+
+**Varmuuskopiot:** valitut vastaanottajat sisältyvät ZIP-vientiin ja -palautukseen. Hälytyshistoria kuuluu Home Assistantin varmuuskopioihin, ei Huoltokirjan ZIP-tiedostoon.
+
+---
+
 ## Huoltokirjan tietojen manuaalinen vienti ja palautus
 
 Home Assistantin koko järjestelmän varmuuskopiointi jää ensisijaiseksi varmuuskopiointitavaksi. Huoltokirjaan on lisätty vain **manuaalinen, siirrettävä ZIP-vienti ja ZIP-palautus**. Uutta ajastettua varmuuskopiointia, erillistä varmuuskopiohistoriaa tai tallennuspaikkaa ei toteuteta.
@@ -105,47 +120,60 @@ Valmistajan suomenkielinen [käyttöohje (PDF)](https://www-static-nw.husqvarna.
 
 ---
 
-## P1-yhteyden korjaus (0.2.6)
+## P1-yhteys ja virhetilanteet (0.2.6)
 
-Huoltokirjan P1-laitteiden yhteys käyttää S6:n `/command/with-contenv`-käynnistystä, jotta `SUPERVISOR_TOKEN` on käytettävissä. P1-yhteysvirhe näytetään nyt syineen sovelluksessa ja tarkempana virheluokkana lokeissa ilman salaisen tokenin paljastamista. Käyttötuntien ja huoltojen tallennetut tiedot säilyvät.
+Huoltokirja lukee P1-tunnistimen entiteetistä `sensor.p1_load_analytics` Supervisorin Core API -välityksellä. Lisäosa tarvitsee `homeassistant_api: true` ja Python-prosessin käyttöön Supervisorin ympäristömuuttujan `SUPERVISOR_TOKEN` (tai vanhan `HASSIO_TOKEN`-nimen). S6-käynnistyksessä ympäristömuuttujat otetaan käyttöön komennolla `/command/with-contenv`.
+
+Jos P1-laitteiden luettelo ei lataudu, **Käyttömittarit**-sivu näyttää tarkemman selityksen: puuttuva API-tunniste, HTTP 401/403 (oikeusongelma), HTTP 404 (anturi puuttuu), yhteysongelma tai vanhentunut P1-mittaus. Lokissa näkyy virheen luokka tai HTTP-koodi, ei tunnistetta. P1:n mittaustietojen puuttuminen ei poista vanhoja huolto- eikä käyttötietoja.
+
+Päivitä Huoltokirjan sovelluskaupan versio automaattijulkaisun jälkeen ja käynnistä Huoltokirja uudelleen. P1-tunnistinta ei tarvitse asentaa uudelleen.
 
 ---
-## P1-käyttötunnit
+## P1-käyttötunnit ja huollettavat laitteet
 
-Huoltokirjaan voi yhdistää P1-tunnistimen laitteet ja lukea niiden käyttötunnit sekä käynnistyskerrat Home Assistantin kautta. Huoltovälit ja tehdyt huollot kuuluvat vain Huoltokirjaan; Järjestelmä-dashboard näyttää edelleen käyttötilastot. P1:n vanhat huoltorajat ja huoltomerkinnät siirretään kertaluonteisesti, kun P1-laite yhdistetään huoltokohteeseen. Edellyttää `homeassistant_api: true` ja P1-versiota 0.5.3. Jos P1 on poissa käytöstä, vanhentuneita lukemia ei kerätä uutena mittauksena.
+P1-tunnistin **0.5.3** jatkaa käyttötuntien ja arvioitujen käynnistysten laskentaa, mutta huoltovälit ja huoltomerkinnät tallennetaan vain Huoltokirjaan.
+
+1. Avaa Huoltokirja → **Käyttömittarit** tai **Kohteet → P1-laitteet**.
+2. Valitse laite ja yhdistä se olemassa olevaan huoltokohteeseen. Luo uusi `Laite`-kohde vain, ellei kohdetta jo ole.
+3. Huoltokirja lukee P1-tiedot Home Assistantin `sensor.p1_load_analytics`-entiteetin kautta. Vain tuoreet onnistuneet P1-mittaukset tallennetaan. Kun P1 on poissa käytöstä, viimeisin vahvistettu lukema säilyy ja merkitään vanhentuneeksi.
+4. Huoltokirjan **Huolto-ohjelma** -kohdassa voit valita käynnistysvälin, käyttötuntivälin tai kalenterivälin. Erääntyminen lasketaan automaattisesti kytketyn P1-laitteen käyttötuntien ja käynnistyskertojen mukaan. P1-käynnistykset ovat tunnistuksen arvioita; releen OFF→ON-siirtymä on vahvempi havainto.
+5. Huolto kirjataan vain **Kirjaa huolto** -toiminnolla. Tuore P1-lukema ehdotetaan lomakkeeseen. Sen voi korjata huoltohetken todelliseen lukemaan.
+
+P1:ssä aiemmin tallennetut huoltorajat ja huoltomerkinnät siirretään yhdistämisen yhteydessä kerran Huoltokirjaan, mutta jo olemassa olevia kohteita tai saman laitteen aktiivisia vastaavia tunti-/käynnistysohjelmia ei kopioida. Alkuperäinen P1 SQLite säilyy varmistusta ja tarvittaessa tarkistusta varten; enintään P1-raportin saatavissa olevat 500 viimeisintä aiempaa merkintää voi siirtää automaattisesti. Muut vanhat merkinnät jäävät alkuperäiseen P1-tietokantaan.
+
+**Huom.** Automatisoidut tunnit kuuluvat vain yhdistetyille laitteille. Autonlämmitys jätetään P1-työajanseurannan ulkopuolelle, mutta autojen tavallinen Huoltokirja toimii entiseen tapaan. Tämä lukuoikeus edellyttää Home Assistantin `homeassistant_api: true` -asetusta. P1:n ja Huoltokirjan tietokantoja ei yhdistetä fyysisesti eikä sähkölaitteita ohjata.
 
 ---
 
-# Huoltokirja
+# Huoltokirja – käyttöohje
 
-Huoltokirja on Home Assistant OS -sovellus useille autoille, kiinteistöille,
-laitteille ja työkoneille. Kirjaa huollot, katsastukset, mittarilukemat,
-toistuvat huoltovälit, kustannukset sekä kuitit.
+## Ensimmäinen käyttöönotto
 
-## Asennus
+1. Käynnistä Huoltokirja Home Assistantin **Sovellukset**-näkymästä ja avaa sen käyttöliittymä.
+2. Valitse **Kohteet → Lisää kohde** ja lisää autot yksitellen. Myös toinen tai kolmas auto on aina oma kohteensa.
+3. Lisää tarvittaessa kiinteistö, työkoneet ja muut huollettavat laitteet.
+4. Avaa kohde ja lisää sille huolto-ohjelma. Esimerkiksi **Öljynvaihto: 12 kuukautta tai 15 000 km**.
+5. Lisää katsastukset tai muut tarkat määräpäivät kiinteinä huolto-ohjelmina.
+6. Huollon jälkeen valitse **Kirjaa huolto**, anna päivämäärä ja tarvittaessa käsin luettu kilometrilukema/käyttötunnit sekä kuitit.
 
-Tämä asennusrepo sisältää vain Home Assistantin julkiset asennustiedot.
-Sovelluskuva on **yksityinen** GitHub Container Registryssa. Home Assistantin
-Supervisorille on ensin annettava lukuoikeus rekisteriin `ghcr.io`.
+Huolto-ohjelma, historia ja mittarilukema kuuluvat aina valittuun kohteeseen. Eri autojen tiedot eivät sekoitu keskenään.
 
-Rekisterin tunnistautumista varten tarvitaan GitHubin personal access token
-**(classic)**, jolla on vain `read:packages`-oikeus ja pääsy yksityiseen
-Huoltokirja-pakettiin. Älä tallenna tokenia tähän repositorioon tai
-Home Assistantin yleiseen `configuration.yaml`-tiedostoon.
+## Huoltomuistutukset
 
-Asenna Huoltokirja Home Assistantin sovelluskaupasta, käynnistä sovellus ja
-avaa sen Ingress-käyttöliittymä. Salli Huoltokirjan asetuksista automaattiset
-päivitykset. Erillistä päivityssovellusta ei asenneta.
+- **Toistuva huolto:** huolto voidaan määritellä kuukausi- ja/tai mittarivälin mukaan. Kirjattu huolto siirtää seuraavaa määräaikaa eteenpäin.
+- **Kiinteä määräpäivä:** esimerkiksi katsastus. Kun se merkitään tehdyksi, anna seuraava määräpäivä käsin. Ellei sitä anneta, huolto-ohjelma suljetaan odottamaan uutta määräpäivää.
+- **Mittarilukema:** lisätään käsin huollon yhteydessä; sovellus ei lue ajoneuvojen tai työkoneiden mittareita automaattisesti.
 
-## Tiedot ja varmuuskopiot
+## Kuitit ja tiedot
 
-Huoltokirjan tietokanta sekä liitteet tallennetaan Home Assistantin
-sovellusdataan (`/data`). Ota Home Assistant -varmuuskopio ennen ensimmäistä
-asennusta, suuria päivityksiä ja mahdollisia tietojen siirtoja.
+Huoltomerkintään voi lisätä enintään neljä kuvaa tai PDF-tiedostoa (kukin enintään 5 Mt). **Raportit**-näkymästä saa ZIP-viennin huoltotiedoista ja liitteistä. ZIP-viennin voi palauttaa Raportit-sivun **Tuo tiedot ZIP-tiedostosta** -toiminnolla, joka korvaa kaikki nykyiset tiedot vahvistuksen jälkeen.
 
-Jos olet käyttänyt vanhaa paikallista `local_huoltokirja`-asennusta, sen data
-**ei siirry automaattisesti** tämän GitHubista asennetun sovelluksen dataan.
-Älä poista vanhaa asennusta ennen tietojen talteenottoa.
+Sovelluksen huoltotiedot säilytetään `/data`-kansiossa ja kuuluvat Home Assistantin sovellusvarmuuskopioihin. Älä julkaise ZIP-vientipakettia GitHubissa: siinä voi olla henkilötietoja, rekisterinumeroita ja kuitteja.
 
-Huoltokirjan lähdekoodi, rakennettu konttikuva ja henkilötietoja sisältävä
-sovellusdata eivät ole julkisia.
+## Käyttäjät ja tietoturva
+
+Sovellus käyttää Home Assistantin kirjautumista ja avautuu vain sen Ingress-välityksen kautta. Perheenjäsenet näkevät samat kohteet ja voivat kirjata huoltoja, jos he pääsevät avaamaan sovelluksen. Erillisiä luku- ja muokkausoikeuksia ei ole vielä toteutettu.
+
+## Kehittäminen
+
+Lähdekoodi, asennusohjeet ja testauskomennot ovat [GitHub-repositorion etusivulla](https://github.com/dimi-alt/huoltokirja).
