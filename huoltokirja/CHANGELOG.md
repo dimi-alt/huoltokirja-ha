@@ -1,3 +1,10 @@
+## P1-laitelistan hallinta
+
+- Piilota tai palauta P1-laitteita Huoltokirjan luettelosta.
+- Pura P1-yhdistäminen poistamatta huoltokohteen historiaa, ohjelmia tai liitteitä.
+- Listaa vain opetetut tai kytkinlähteeseen yhdistetyt laitteet ja nykyiset linkit.
+- Piilotukset säilyvät SQLite-tietokannassa ja ZIP-varmuuskopioissa.
+
 ## Huoltokirja 0.2.7 – Ilmoituskeskus-yhteys
 
 - Huolto-ohjelmille voi valita yksittäisiä Home Assistant -käyttäjiä muistutusten vastaanottajiksi.

@@ -1,3 +1,9 @@
+## P1-laitteiden hallinta
+
+Huoltokirja listaa P1:stä opetetut tai releen ON-tunninseurantaan liitetyt laitteet; pelkät oletusnimet piilotetaan. **Piilota** tai **Palauta näkyviin** vaikuttaa vain laiteluetteloon. **Poista yhdistäminen** poistaa mittarilinkin mutta säilyttää huoltotiedot ja kohteen. Opetusmallin kokonaispoisto tehdään P1-tunnistimessa 0.5.4 ja vaatii laitteen nimen kirjoittamisen; P1-historia säilyy.
+
+---
+
 ## Ilmoituskeskuksen huoltomuistutukset (0.2.7)
 
 1. Ota Keijukangas Ilmoituskeskus -integraatio käyttöön Home Assistantissa ja varmista, että `sensor.keijukangas_alerts` on käytettävissä.
